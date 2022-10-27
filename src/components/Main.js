@@ -15,12 +15,27 @@ const Main = () => {
   const getTopAnime = async () => {
     const temp = await fetch(`https://api.jikan.moe/v4/top/anime`)
       .then(res => res.json());
-
     setTopAnime(temp.data.slice(0, 5));
+  }
+  const getRandomAnime = async () => {
+    const temp = await fetch(`https://api.jikan.moe/v4/top/anime`)
+      .then(res => res.json());
+const data = temp.data.map((item,i) => {
+    return {
+      img: item.images.jpg.large_image_url,
+      title: item.title_english,
+      body: item.synopsis,
+      url: item.url,
+      rating: item.rating
+    };
+    })
+    setAnimeData(data.slice(5,25));
+    console.log(data);
   }
 
   useEffect(() => {
     getTopAnime();
+    getRandomAnime();
   }, []);
 
   const handleSearch = (e) => {
@@ -36,9 +51,9 @@ const Main = () => {
         title: item.title_english,
         body: item.synopsis,
         url: item.url,
-        rating: item.rating
+        rating: item.rating,
       };
-    })
+    });
     setAnimeData(data);
   }
 
